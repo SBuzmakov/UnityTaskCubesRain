@@ -1,63 +1,62 @@
-using System;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Pool;
 
 namespace Source.Scripts
 {
     public class CubesPool : MonoBehaviour
     {
-        [SerializeField] private GameObject _cubePrefab;
-        [SerializeField, Range(1, 100)] public int _poolSize;
-        [SerializeField] Painter _painter;
+        [SerializeField] private Cube _cubePrefab;
 
-        private List<GameObject> _pool = new();
+        private ObjectPool<Cube> _pool;
+        private CubeFactory _cubeFactory;
 
         private void Start()
         {
-            Create();
+            _cubeFactory = new(_cubePrefab);
+
+            _pool = new(
+                createFunc: CreateCube,
+                actionOnGet: OnTakeFromPool,
+                actionOnRelease: OnReturnToPool,
+                actionOnDestroy: OnDestroyCube,
+                collectionCheck: false
+            );
         }
 
-        public GameObject GetCube()
+        public Cube Take()
         {
-            foreach (GameObject cube in _pool)
-            {
-                if (cube.activeInHierarchy == false)
-                {
-                    return cube;
-                }
-            }
-
-            return null;
+            return _pool.Get();
         }
 
-        private void Create()
+        private void OnTakeFromPool(Cube cube)
         {
-            for (int i = 0; i < _poolSize; i++)
-            {
-                CreateCube();
-            }
+            cube.gameObject.SetActive(true);
         }
 
-        private void CreateCube()
+        private void OnReturnToPool(Cube cube)
         {
-            GameObject newCubeObject = Instantiate(_cubePrefab);
+            cube.gameObject.SetActive(false);
+        }
 
-            Cube cube = newCubeObject.GetComponent<Cube>();
+        private void OnDestroyCube(Cube cube)
+        {
+            cube.ActiveLifeFinished -= Release;
             
-            if (cube != null)
-            {
-                CubeListener cubeListener = new CubeListener(cube, _painter);
+            Destroy(cube.gameObject);
+        }
 
-                cubeListener.Subscribe();
-            }
-            else
-            {
-                throw new NullReferenceException("cube component is null");
-            }
+        private void Release(Cube cube)
+        {
+            _pool.Release(cube);
+        }
+
+        private Cube CreateCube()
+        {
+            Cube newCube = _cubeFactory.ConstructCube();
+
+            newCube.ActiveLifeFinished += Release;
             
-            newCubeObject.SetActive(false);
-
-            _pool.Add(newCubeObject);
+            return newCube;
         }
     }
 }

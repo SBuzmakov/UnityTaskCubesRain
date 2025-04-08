@@ -520,9 +520,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1779bd6b3ecc38b4a8617b69dbdda07a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _cubePrefab: {fileID: 3431081136016621368, guid: ac7f645d6b610c04dbf1303d992c0122, type: 3}
-  _poolSize: 100
-  _painter: {fileID: 1824008224}
+  _cubePrefab: {fileID: 4623518317456441051, guid: ac7f645d6b610c04dbf1303d992c0122, type: 3}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -1063,50 +1061,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e998bde69fba4b3a9be76df096afeb91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &1824008222
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1824008223}
-  - component: {fileID: 1824008224}
-  m_Layer: 0
-  m_Name: Painter
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1824008223
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1824008222}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -25.279285, y: 10.210289, z: -7.7174788}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1927648919}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1824008224
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1824008222}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d728a627c04a9f1419699edb6024c4c4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1889727417
 GameObject:
   m_ObjectHideFlags: 0
@@ -1156,7 +1110,7 @@ MonoBehaviour:
   _cloudHeight: 15
   _cloudDivisor: 4
   _rainIntensity: 10
-  _rainFrequency: 0.5
+  _rainFrequency: 0
   _isWorking: 1
 --- !u!1 &1927648918
 GameObject:
@@ -1189,7 +1143,6 @@ Transform:
   m_Children:
   - {fileID: 1889727418}
   - {fileID: 650259642}
-  - {fileID: 1824008223}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807

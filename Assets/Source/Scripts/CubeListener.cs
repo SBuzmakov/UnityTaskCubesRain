@@ -3,31 +3,30 @@ namespace Source.Scripts
     public class CubeListener
     {
         private readonly Painter _painter;
-        private readonly Cube _cubeComponent;
+        private readonly Cube _cube;
         
         public CubeListener(Cube cube, Painter painter)
         {
             _painter = painter;
-
-            _cubeComponent = cube;
+            _cube = cube;
         }
 
         public void Subscribe()
         {
-            _cubeComponent.TouchedPlatform += _painter.RandomRepaint;
+            _cube.TouchedPlatform += _painter.RandomRepaint;
             
-            _cubeComponent.TurnedOff += _painter.Repaint;
+            _cube.NeedsBaseColor += _painter.BaseRepaint;
             
-            _cubeComponent.Destroyed += Unsubscribe;
+            _cube.Destroyed += Unsubscribe;
         }
 
         private void Unsubscribe()
         {
-            _cubeComponent.TouchedPlatform -= _painter.RandomRepaint;
+            _cube.TouchedPlatform -= _painter.RandomRepaint;
             
-            _cubeComponent.TurnedOff -= _painter.Repaint;
+            _cube.NeedsBaseColor -= _painter.BaseRepaint;
             
-            _cubeComponent.Destroyed -= Unsubscribe;
+            _cube.Destroyed -= Unsubscribe;
         }
     }
 }

@@ -1,46 +1,63 @@
 using System;
+using System.Collections;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
-public class Cube : MonoBehaviour
+namespace Source.Scripts
 {
-    [SerializeField, Range(2, 5)] private float _lifeTimeAfterCollision;
-
-    private Color _baseRendererColor;
-    
-    public event Action<Renderer> TouchedPlatform;
-    public event Action<Renderer, Color> TurnedOff;
-    public event Action Destroyed;
-
-    public bool IsCollisioned { get; private set; } = false;
-
-    private void Start()
+    public class Cube : MonoBehaviour
     {
-        _baseRendererColor = gameObject.GetComponent<Renderer>().material.color;
-    }
-    
-    private void OnCollisionEnter(Collision other)
-    {
-        if (other.gameObject.GetComponent<Platform>() && IsCollisioned == false)
+        private const float MinLifeTimeAfterCollision = 2.0f;
+        private const float MaxLifeTimeAfterCollision = 5.0f;
+
+        private Renderer _renderer;
+        private Coroutine _lifeTimeCoroutine;
+        private bool _isCollisioned;
+
+        public event Action<Renderer> TouchedPlatform;
+        public event Action Destroyed;
+        public event Action<Cube> ActiveLifeFinished;
+        public event Action<Renderer> NeedsBaseColor;
+
+        private void Start()
         {
-            IsCollisioned = true;
-            
-            Invoke(nameof(SetActiveFalse), _lifeTimeAfterCollision);
-
-            TouchedPlatform?.Invoke(gameObject.GetComponent<Renderer>());
+            _renderer = GetComponent<Renderer>();
         }
-    }
 
-    private void OnDestroy()
-    {
-        Destroyed?.Invoke();
-    }
-    
-    private void SetActiveFalse()
-    {
-        gameObject.SetActive(false);
+        private void OnCollisionEnter(Collision other)
+        {
+            if (other.gameObject.TryGetComponent(out Platform _) && _isCollisioned == false)
+            {
+                _isCollisioned = true;
 
-        IsCollisioned = false;
-        
-        TurnedOff?.Invoke(gameObject.GetComponent<Renderer>(), _baseRendererColor);
+                StartCoroutine(LifeTimerJob(GetRandomLifeTime()));
+
+                TouchedPlatform?.Invoke(_renderer);
+            }
+        }
+
+        private void OnDisable()
+        {
+            _isCollisioned = false;
+        }
+
+        private IEnumerator LifeTimerJob(float delayTime)
+        {
+            yield return new WaitForSeconds(delayTime);
+
+            ActiveLifeFinished?.Invoke(this);
+
+            NeedsBaseColor?.Invoke(_renderer);
+        }
+
+        private float GetRandomLifeTime()
+        {
+            return Random.Range(MinLifeTimeAfterCollision, MaxLifeTimeAfterCollision);
+        }
+
+        private void OnDestroy()
+        {
+            Destroyed?.Invoke();
+        }
     }
 }

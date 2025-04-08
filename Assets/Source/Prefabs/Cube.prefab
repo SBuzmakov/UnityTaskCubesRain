@@ -146,5 +146,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b654971f2b46f9b4f830fceca67866ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _lifeTimeAfterCollision: 2
-  _baseColor: {r: 0.5617586, g: 0.85993433, b: 0.96981126, a: 0}
