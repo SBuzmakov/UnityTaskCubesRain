@@ -61,14 +61,14 @@ namespace Source.Scripts
             Vector3 center = _ground.bounds.center;
             Vector3 size = _ground.bounds.size;
             
-            float positionX = GetRandomPositonValue(center, size);
+            float positionX = GetRandomPositionValue(center, size);
             
-            float positionZ = GetRandomPositonValue(center, size);
+            float positionZ = GetRandomPositionValue(center, size);
             
             return new Vector3(positionX, _positionY, positionZ);
         }
 
-        private float GetRandomPositonValue(Vector3 center, Vector3 size)
+        private float GetRandomPositionValue(Vector3 center, Vector3 size)
         {
             return Random.Range(center.x - size.x / _cloudDivisor, center.x + size.x / _cloudDivisor);
         }
